@@ -74,7 +74,7 @@
             <uses-permission android:name="android.permission.VIBRATE" />
         </config-file>
 
-        <hook type="before_prepare" src="hooks/modify-java-files.js" />
+        <hook type="after_prepare" src="hooks/modify-java-files.js" />
         <hook type="before_prepare" src="hooks/post-process.js" />
         <hook type="before_prepare" src="hooks/copy-resources.js" />
         <hook type="before_prepare" src="hooks/move-files.js" />
