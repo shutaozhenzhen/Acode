@@ -13,6 +13,7 @@ import EditorFile from './editorFile';
 import tutorial from 'components/tutorial';
 import box from 'dialogs/box';
 import alert from 'dialogs/alert';
+import browser from 'plugins/browser';
 
 /**@type {Server} */
 let webServer;
@@ -109,6 +110,7 @@ async function run(
         }
 
         next();
+        return;
       } catch (err) {
         helpers.error(err);
         return;
@@ -303,6 +305,10 @@ async function run(
     }
   }
 
+  /**
+   * Sends 404 error
+   * @param {string} id 
+   */
   function error(id) {
     webServer?.send(id, {
       status: 404,
@@ -310,13 +316,18 @@ async function run(
     });
   }
 
+  /**
+   * Sends favicon
+   * @param {string} assets 
+   * @param {string} reqId 
+   */
   function sendIco(assets, reqId) {
     const ico = Url.join(assets, 'res/logo/favicon.ico');
     sendFile(ico, reqId);
   }
 
   /**
-   *
+   * Sends HTML file
    * @param {string} text
    * @param {string} id
    */
@@ -358,6 +369,12 @@ async function run(
     sendText(text, id);
   }
 
+  /**
+   * Sends file
+   * @param {string} path 
+   * @param {string} id 
+   * @returns 
+   */
   async function sendFile(path, id) {
     if (isLoading) {
       queue.push(() => {
@@ -413,6 +430,14 @@ async function run(
     if (typeof action === 'function') action();
   }
 
+  /**
+   * Sends file content
+   * @param {string} url 
+   * @param {string} id 
+   * @param {string} mime 
+   * @param {(txt: string) => string} processText 
+   * @returns 
+   */
   async function sendFileContent(url, id, mime, processText) {
     const fs = fsOperation(url);
 
@@ -430,6 +455,13 @@ async function run(
     }
   }
 
+  /**
+   * Sends text
+   * @param {string} text 
+   * @param {string} id 
+   * @param {string} mimeType 
+   * @param {(txt: string) => string} processText 
+   */
   function sendText(text, id, mimeType, processText) {
     webServer?.send(id, {
       status: 200,
@@ -440,17 +472,18 @@ async function run(
     });
   }
 
+  /**
+   * Opens the preview in browser
+   */
   function openBrowser() {
+    console.count('openBrowser');
     const src = `http://localhost:${port}/${filename}`;
     if (target === 'browser') {
       system.openInBrowser(src);
       return;
     }
 
-    const browser = system.inAppBrowser(src, filename, !isConsole, appSettings.value.disableCache);
-    browser.onOpenExternalBrowser = () => {
-      target = "browser";
-    };
+    browser.open(src, isConsole);
   }
 }
 

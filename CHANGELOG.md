@@ -1,5 +1,21 @@
 # Change Log
 
+## [1.9.0]
+
+- New
+  - [x] **New in app browser** | 324
+    - New in app browser with new UI.
+    - You can emulate multiple devices.
+  - [x] **New mode** | 933
+    - Zig mode
+    - Astro mode
+- Fixes
+  - [x] **File** | 931
+    - Fixed not able share, edit or open with other apps.
+    - Fixed file rename not working properly. | 934
+  - [x] **Preview** | 934
+    - Fixed preview where it opens browser two times.
+
 ## [1.8.8]
 
 - New
